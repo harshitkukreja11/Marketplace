@@ -1,18 +1,14 @@
+import { prisma } from "@/lib/prisma"
+
 async function getListings() {
-
   try {
-
-    const res = await fetch(
-      "http://localhost:3000/api/listings",
-      { cache: "no-store" }
-    )
-
-    if (!res.ok) return []
-
-    return await res.json()
-
+    return await prisma.listing.findMany({
+      orderBy: {
+        createdAt: "desc"
+      }
+    })
   } catch (error) {
-    console.error(error)
+    console.log("FETCH LISTINGS ERROR:", error)
     return []
   }
 }
@@ -28,28 +24,43 @@ export default async function Home() {
         Latest Listings
       </h1>
 
-      <div className="grid grid-cols-3 gap-5">
+      {listings.length === 0 ? (
+        <p className="text-gray-500">
+          No listings available
+        </p>
+      ) : (
 
-        {listings.map((item) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
 
-          <div
-            key={item.id}
-            className="border p-4 rounded"
-          >
-            <h2 className="font-bold">
-              {item.title}
-            </h2>
+          {listings.map((item) => (
 
-            <p>{item.price} AED</p>
+            <div
+              key={item.id}
+              className="border p-4 rounded hover:shadow-md transition"
+            >
 
-            <p className="text-gray-500">
-              {item.category}
-            </p>
-          </div>
+              <h2 className="font-bold text-lg">
+                {item.title}
+              </h2>
 
-        ))}
+              <p className="text-blue-600 font-semibold mt-2">
+                {item.price} AED
+              </p>
 
-      </div>
+              <p className="text-gray-500 mt-1">
+                {item.category}
+              </p>
+
+              <p className="text-gray-400 text-sm mt-2">
+                {item.location}
+              </p>
+
+            </div>
+
+          ))}
+
+        </div>
+      )}
 
     </div>
   )
