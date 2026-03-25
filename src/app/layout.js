@@ -2,7 +2,7 @@ import "./globals.css"
 import Navbar from "@/components/Navbar"
 
 export const metadata = {
-  title: "Classified Marketplace",
+  title: "Classified Marketplace.",
   description: "Buy and Sell",
 }
 
