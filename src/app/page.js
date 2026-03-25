@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma"
+export const dynamic = "force-dynamic"
 
 async function getListings() {
   try {
@@ -26,7 +27,7 @@ export default async function Home() {
 
       {listings.length === 0 ? (
         <p className="text-gray-500">
-          No listings available
+          No Listings Available
         </p>
       ) : (
 
